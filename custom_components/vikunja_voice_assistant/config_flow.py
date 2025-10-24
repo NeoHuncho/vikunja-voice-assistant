@@ -193,4 +193,23 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore[call
             errors=errors,
         )
 
+    async def async_step_import(self, import_data):
+        """Handle import from old domain during migration.
+
+        This is called by async_migrate_old_domain to create new entries
+        with the new domain from old domain entries.
+        """
+        _LOGGER.info("Importing config entry from old domain migration")
+
+        # Avoid duplicate entries - check if entry with same URL already exists
+        await self.async_set_unique_id(f"vikunja_{import_data[CONF_VIKUNJA_URL]}")
+        self._abort_if_unique_id_configured()
+
+        # Create the entry directly without validation
+        # (validation already happened when the old entry was created)
+        return self.async_create_entry(
+            title=f"Vikunja ({import_data[CONF_VIKUNJA_URL]})",
+            data=import_data,
+        )
+
     # Removed second step; kept method slot intentionally deleted.

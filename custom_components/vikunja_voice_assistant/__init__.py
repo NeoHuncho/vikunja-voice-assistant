@@ -62,8 +62,8 @@ async def async_migrate_old_domain(hass: HomeAssistant) -> None:
     """Migrate config entries from old domain 'vikunja' to new domain 'vikunja_voice_assistant'.
 
     This ensures users who installed with the old domain name continue to work after update.
-    We simply copy data from old domain to new domain storage and let the new domain
-    take over.
+    Since Home Assistant doesn't support changing a config entry's domain directly,
+    we create new entries and remove old ones.
     """
     # Check if there's a config entry with the old domain
     old_entries = [entry for entry in hass.config_entries.async_entries(OLD_DOMAIN)]
@@ -72,26 +72,72 @@ async def async_migrate_old_domain(hass: HomeAssistant) -> None:
         return
 
     _LOGGER.warning(
-        "Found %d config entries with old domain '%s'. "
-        "These will be migrated to '%s'. "
-        "You may need to reload the integration after this update.",
+        "Found %d config entries with old domain '%s'. " "Migrating to '%s'.",
         len(old_entries),
         OLD_DOMAIN,
         DOMAIN,
     )
 
-    # Copy data from old domain to new domain in hass.data
-    # This allows the integration to work with old config entries
-    if OLD_DOMAIN in hass.data and DOMAIN not in hass.data:
-        hass.data[DOMAIN] = hass.data[OLD_DOMAIN].copy()
-        _LOGGER.info("Copied configuration data from old domain to new domain")
+    # Migrate each old entry to the new domain
+    for old_entry in old_entries:
+        # Check if an entry with the new domain already exists with the same URL
+        existing_new = [
+            entry
+            for entry in hass.config_entries.async_entries(DOMAIN)
+            if entry.data.get(CONF_VIKUNJA_URL) == old_entry.data.get(CONF_VIKUNJA_URL)
+        ]
+
+        if existing_new:
+            # New domain entry already exists, just remove the old one
+            _LOGGER.info(
+                "Entry for '%s' already exists in new domain, removing old entry",
+                old_entry.data.get(CONF_VIKUNJA_URL),
+            )
+            await hass.config_entries.async_remove(old_entry.entry_id)
+        else:
+            # Create new entry with new domain
+            _LOGGER.info(
+                "Migrating entry for '%s' from domain '%s' to '%s'",
+                old_entry.data.get(CONF_VIKUNJA_URL),
+                OLD_DOMAIN,
+                DOMAIN,
+            )
+
+            # Create the new config entry with the same data but new domain
+            result = await hass.config_entries.flow.async_init(
+                DOMAIN,
+                context={"source": "import"},
+                data=old_entry.data,
+            )
+
+            # If successful, remove the old entry
+            if result.get("type") == "create_entry":
+                await hass.config_entries.async_remove(old_entry.entry_id)
+                _LOGGER.info("Successfully migrated entry to new domain")
+            else:
+                _LOGGER.error(
+                    "Failed to migrate entry for '%s': %s",
+                    old_entry.data.get(CONF_VIKUNJA_URL),
+                    result,
+                )
+
+    # Copy runtime data if it exists
+    if OLD_DOMAIN in hass.data:
+        if DOMAIN not in hass.data:
+            hass.data[DOMAIN] = hass.data[OLD_DOMAIN].copy()
+            _LOGGER.info(
+                "Copied runtime configuration data from old domain to new domain"
+            )
+        # Clean up old domain data
+        hass.data.pop(OLD_DOMAIN, None)
 
 
 async def async_setup(hass: HomeAssistant, config):
-    hass.data.setdefault(DOMAIN, {})
-
-    # Migrate any old domain data
+    # Migrate any old domain entries BEFORE initializing new domain
     await async_migrate_old_domain(hass)
+
+    # Now initialize the new domain
+    hass.data.setdefault(DOMAIN, {})
 
     return True
 
@@ -99,16 +145,16 @@ async def async_setup(hass: HomeAssistant, config):
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up Vikunja from a config entry."""
 
-    # Support both old and new domain entries
-    # If this is called with an old domain entry, we handle it gracefully
-    actual_domain = entry.domain
-    if actual_domain == OLD_DOMAIN:
-        _LOGGER.warning(
-            "Config entry is using old domain '%s'. "
-            "Please consider removing and re-adding the integration to use the new domain '%s'.",
+    # After migration in async_setup, all entries should have the new domain
+    # This is just a safety check in case migration didn't run
+    if entry.domain == OLD_DOMAIN:
+        _LOGGER.error(
+            "Config entry is still using old domain '%s'. "
+            "Migration should have updated this. Please reload Home Assistant.",
             OLD_DOMAIN,
-            DOMAIN,
         )
+        # Don't proceed with setup for old domain entries - they should have been migrated
+        return False
 
     hass.data[DOMAIN] = {
         CONF_VIKUNJA_URL: entry.data[CONF_VIKUNJA_URL],
