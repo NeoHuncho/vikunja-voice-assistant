@@ -1,4 +1,5 @@
 DOMAIN = "vikunja_voice_assistant"
+OLD_DOMAIN = "vikunja"  # For migration from old installations
 CONF_VIKUNJA_URL = "vikunja_url"
 CONF_VIKUNJA_API_KEY = "vikunja_api_key"
 CONF_OPENAI_API_KEY = "openai_api_key"

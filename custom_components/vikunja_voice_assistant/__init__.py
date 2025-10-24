@@ -6,6 +6,7 @@ from homeassistant.config_entries import ConfigEntry
 
 from .const import (
     DOMAIN,
+    OLD_DOMAIN,
     CONF_VIKUNJA_API_KEY,
     CONF_OPENAI_API_KEY,
     CONF_VIKUNJA_URL,
@@ -57,13 +58,58 @@ def copy_custom_sentences(hass: HomeAssistant) -> None:
                     dst.write(src.read())
 
 
+async def async_migrate_old_domain(hass: HomeAssistant) -> None:
+    """Migrate config entries from old domain 'vikunja' to new domain 'vikunja_voice_assistant'.
+
+    This ensures users who installed with the old domain name continue to work after update.
+    We simply copy data from old domain to new domain storage and let the new domain
+    take over.
+    """
+    # Check if there's a config entry with the old domain
+    old_entries = [entry for entry in hass.config_entries.async_entries(OLD_DOMAIN)]
+
+    if not old_entries:
+        return
+
+    _LOGGER.warning(
+        "Found %d config entries with old domain '%s'. "
+        "These will be migrated to '%s'. "
+        "You may need to reload the integration after this update.",
+        len(old_entries),
+        OLD_DOMAIN,
+        DOMAIN,
+    )
+
+    # Copy data from old domain to new domain in hass.data
+    # This allows the integration to work with old config entries
+    if OLD_DOMAIN in hass.data and DOMAIN not in hass.data:
+        hass.data[DOMAIN] = hass.data[OLD_DOMAIN].copy()
+        _LOGGER.info("Copied configuration data from old domain to new domain")
+
+
 async def async_setup(hass: HomeAssistant, config):
     hass.data.setdefault(DOMAIN, {})
+
+    # Migrate any old domain data
+    await async_migrate_old_domain(hass)
+
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up Vikunja from a config entry."""
+
+    # Support both old and new domain entries
+    # If this is called with an old domain entry, we handle it gracefully
+    actual_domain = entry.domain
+    if actual_domain == OLD_DOMAIN:
+        _LOGGER.warning(
+            "Config entry is using old domain '%s'. "
+            "Please consider removing and re-adding the integration to use the new domain '%s'.",
+            OLD_DOMAIN,
+            DOMAIN,
+        )
+
     hass.data[DOMAIN] = {
         CONF_VIKUNJA_URL: entry.data[CONF_VIKUNJA_URL],
         CONF_VIKUNJA_API_KEY: entry.data[CONF_VIKUNJA_API_KEY],

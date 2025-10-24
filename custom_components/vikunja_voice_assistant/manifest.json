@@ -8,5 +8,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/NeoHuncho/vikunja-todo-ai-homeassistant/issues",
   "requirements": ["requests", "aiohttp"],
-  "version": "1.4.2"
+  "version": "1.4.4"
 }
