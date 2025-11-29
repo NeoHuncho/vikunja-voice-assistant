@@ -58,9 +58,9 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
      * Projects: Read All, Projectusers (optional - for user assignment)
      * Tasks: Create
 
-       📹 [Video Guide](https://github.com/user-attachments/assets/f131c6bb-2e78-4feb-b72e-7c76ec3fbaf2)       
-
-   * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/2202b199-a30e-4fb2-8e55-1f998dffe9ea)
+       📹 [Video Guide](https://github.com/user-attachments/assets/8b68ab2a-2d8c-4dd4-881d-96ca2b501ddb)       
+       
+   * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/500ad67f-89a6-473b-a934-e08f7a35d7e7)
 
      Select the Home Assistant `ai_task` entity that is configured to run your preferred LLM via `ai_task.generate_data`.
 
