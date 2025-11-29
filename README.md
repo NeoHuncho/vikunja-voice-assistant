@@ -41,7 +41,7 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
 
 ⏱️ *Create your first task in under 2 minutes!*
 
-1. In HACS → Search: **[Vikunja Voice Assistant](https://home.coprin.ovh/hacs/repository/998003183)** → Install
+1. In HACS → Search: **Vikunja Voice Assistant** → Install
 
 2. Restart Home Assistant
 
@@ -58,9 +58,9 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
      * Projects: Read All, Projectusers (optional - for user assignment)
      * Tasks: Create
 
-       📹 [Video Guide](https://github.com/user-attachments/assets/97927621-394b-4fb5-aa66-4cef0325f726)
+       📹 [Video Guide](https://github.com/user-attachments/assets/f131c6bb-2e78-4feb-b72e-7c76ec3fbaf2)       
 
-   * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/5435bf42-e7b7-4150-8109-433847dd61d4)
+   * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/2202b199-a30e-4fb2-8e55-1f998dffe9ea)
 
      Select the Home Assistant `ai_task` entity that is configured to run your preferred LLM via `ai_task.generate_data`.
 
