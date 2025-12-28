@@ -58,10 +58,12 @@ def build_task_creation_messages(
 
         default_due_date_instructions = f"""
         IMPORTANT DEFAULT DUE DATE RULE:
-        - If no specific project or due date is mentioned in the task, use this default due date: {default_due_date_value}
-        - If a specific project is mentioned, do not set any due date unless the user explicitly mentions one
-        - If a specific due date is mentioned by the user, always use that instead of the default
-        - Even if a recurring task instruction is given, if no due date is mentioned, set it to {default_due_date_value}
+        - ONLY apply the default due date ({default_due_date_value}) when BOTH conditions are met:
+          1. The user does NOT mention any specific project name (e.g., "shopping", "work", "personal")
+          2. The user does NOT mention any specific due date or time
+        - If the user mentions ANY project name from the available projects list → do NOT set any due date (leave due_date field out entirely) unless the user also explicitly mentions a date/time
+        - If the user explicitly mentions a due date/time → always use that date instead of the default
+        - For recurring tasks without an explicit due date AND without a project mentioned → set to {default_due_date_value}
         """
 
     voice_correction_instructions = ""
@@ -169,6 +171,14 @@ def build_task_creation_messages(
     Input: "Finish the project report"
         (assuming you have default due date settings set up)
         Output: {{"title": "Finish project report", "project_id": 1, "due_date": "2023-06-10T12:00:00Z"}}
+
+    Input: "Buy milk for the shopping project"
+        (user mentions a project name → NO default due date)
+        Output: {{"title": "Buy milk", "project_id": 5}}
+
+    Input: "Call dentist for work by Friday"
+        (user mentions both project AND due date → use the explicit due date)
+        Output: {{"title": "Call dentist", "project_id": 2, "due_date": "2023-06-09T12:00:00Z"}}
 
     Input: "Assign prepare slides to William for next week"
     Output: {{"title": "Prepare slides", "project_id": 1, "due_date": "2023-06-16T12:00:00Z", "assignee": "william"}}
