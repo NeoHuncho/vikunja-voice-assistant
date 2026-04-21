@@ -8,5 +8,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/NeoHuncho/vikunja-voice-assistant/issues",
   "requirements": ["requests", "aiohttp"],
-  "version": "2.0.0"
+  "version": "2.0.1"
 }

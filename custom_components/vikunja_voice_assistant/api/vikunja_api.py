@@ -14,6 +14,38 @@ class VikunjaAPI:
             "Authorization": f"Bearer {vikunja_api_key}",
         }
 
+    @staticmethod
+    def _log_response_content(err):
+        resp = getattr(err, "response", None)
+        if resp is not None and hasattr(resp, "text"):
+            _LOGGER.error("Response content: %s", resp.text)
+        return resp
+
+    @staticmethod
+    def _is_invalid_token_response(response) -> bool:
+        if response is None or getattr(response, "status_code", None) != 401:
+            return False
+        try:
+            payload = response.json()
+        except ValueError:
+            payload = None
+        if isinstance(payload, dict):
+            if payload.get("code") == 11:
+                return True
+            message = str(payload.get("message", "")).lower()
+            return "invalid token" in message
+        text = getattr(response, "text", "")
+        return "invalid token" in text.lower()
+
+    def _log_scoped_token_hint(self, response, route_description, remedy):
+        if not self._is_invalid_token_response(response):
+            return
+        _LOGGER.error(
+            "Vikunja rejected %s with a route-specific token error. Scoped API tokens were tightened in Vikunja 2.3.0 and now match both HTTP method and path. %s",
+            route_description,
+            remedy,
+        )
+
     def test_connection(self):
         """Simple connectivity check by listing projects."""
         try:
@@ -114,9 +146,12 @@ class VikunjaAPI:
             _LOGGER.error(
                 "Failed to attach label %s to task %s: %s", label_id, task_id, err
             )
-            resp = getattr(err, "response", None)
-            if resp is not None and hasattr(resp, "text"):
-                _LOGGER.error("Response content: %s", resp.text)
+            resp = self._log_response_content(err)
+            self._log_scoped_token_hint(
+                resp,
+                "label attachment via PUT /tasks/{task}/labels",
+                "Recreate the API token and grant access for this route. For task labels, Vikunja usually needs task-update scope in addition to label read/create permissions. If you only need task creation, you can also disable the auto voice label option.",
+            )
             return False
 
     def add_task(self, task_data):
@@ -182,7 +217,10 @@ class VikunjaAPI:
             _LOGGER.error(
                 "Failed to assign user %s to task %s: %s", user_id, task_id, err
             )
-            resp = getattr(err, "response", None)
-            if resp is not None and hasattr(resp, "text"):
-                _LOGGER.error("Response content: %s", resp.text)
+            resp = self._log_response_content(err)
+            self._log_scoped_token_hint(
+                resp,
+                "assignee attachment via PUT /tasks/{taskID}/assignees",
+                "Recreate the API token and grant access for this route. On newer Vikunja versions, assignee updates may require their own scoped permission in addition to basic task creation.",
+            )
             return False

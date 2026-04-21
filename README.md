@@ -11,11 +11,8 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
 *[Video Demo 🎥](https://github.com/user-attachments/assets/c592b0e8-efc6-40d1-ad53-a442de69bfc5)*
 </div>
 
-
 > **⚠️ Important Notice (Breaking Changes):**
-> This version now uses Home Assistant's AI Task (`ai_task.generate_data`) pipeline instead of calling OpenAI directly.
-> After updating from a version before 2.0.0, you MUST reconfigure the integration and **select a compatible AI Task entity**.
-
+> Due to recent changes in Vikunja's API token permissions (starting from Vikunja 2.3.0), you will need to add the task update permission to your API token for the voice label attachment to work.
 
 ---
 
@@ -56,9 +53,7 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
      * **Set the following permissions**:
      * Labels: Create and Read All
      * Projects: Read All, Projectusers (optional - for user assignment)
-     * Tasks: Create
-
-       📹 [Video Guide](https://github.com/user-attachments/assets/8b68ab2a-2d8c-4dd4-881d-96ca2b501ddb)       
+     * Tasks: Create and Update
        
    * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/500ad67f-89a6-473b-a934-e08f7a35d7e7)
 
