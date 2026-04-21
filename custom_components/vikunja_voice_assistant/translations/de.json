@@ -5,7 +5,7 @@
         "title": "Vikunja Sprachassistent",
         "description": "Vikunja Sprachassistent-Integration einrichten",
         "data": {
-          "vikunja_url": "Vikunja Basis-URL (z.B. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja Basis-URL",
           "vikunja_api_key": "Vikunja API-Token",
           "ai_task_entity": "AI-Task-Entität",
           "voice_correction": "Spracherkennungs-Textkorrektur aktivieren (empfohlen)",
@@ -19,7 +19,7 @@
         "title": "Vikunja Sprachassistent neu konfigurieren",
         "description": "Aktualisieren Sie die Konfiguration der Vikunja Sprachassistent-Integration",
         "data": {
-          "vikunja_url": "Vikunja Basis-URL (z.B. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja Basis-URL",
           "vikunja_api_key": "Vikunja API-Token",
           "ai_task_entity": "AI-Task-Entität",
           "voice_correction": "Spracherkennungs-Textkorrektur aktivieren (empfohlen)",

@@ -5,7 +5,7 @@
         "title": "Голосовой помощник Vikunja",
         "description": "Настройте интеграцию голосового помощника Vikunja",
         "data": {
-          "vikunja_url": "Базовый URL Vikunja (пример https://vikunja.example.com)",
+          "vikunja_url": "Базовый URL Vikunja",
           "vikunja_api_key": "API токен Vikunja",
           "ai_task_entity": "Сущность AI Task",
           "voice_correction": "Включить исправление текста распознавания речи (рекомендуется)",
@@ -19,7 +19,7 @@
         "title": "Перенастройка голосового помощника Vikunja",
         "description": "Обновите конфигурацию интеграции голосового помощника Vikunja",
         "data": {
-          "vikunja_url": "Базовый URL Vikunja (пример https://vikunja.example.com)",
+          "vikunja_url": "Базовый URL Vikunja",
           "vikunja_api_key": "API токен Vikunja",
           "ai_task_entity": "Сущность AI Task",
           "voice_correction": "Включить исправление текста распознавания речи (рекомендуется)",

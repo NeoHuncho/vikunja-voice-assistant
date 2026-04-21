@@ -41,7 +41,7 @@ class VikunjaAPI:
         if not self._is_invalid_token_response(response):
             return
         _LOGGER.error(
-            "Vikunja rejected %s with a route-specific token error. Scoped API tokens were tightened in Vikunja 2.3.0 and now match both HTTP method and path. %s",
+            "Vikunja rejected %s with an invalid-token response. If you're using a scoped API token, Vikunja 2.3.0 tightened token matching to both HTTP method and path. %s",
             route_description,
             remedy,
         )

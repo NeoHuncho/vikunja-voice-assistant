@@ -5,7 +5,7 @@
         "title": "Vikunja voice assistant",
         "description": "Set up Vikunja voice assistant integration",
         "data": {
-          "vikunja_url": "Vikunja base URL (e.g. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja base URL",
           "vikunja_api_key": "Vikunja API Token",
           "ai_task_entity": "AI Task entity",
           "voice_correction": "Enable speech recognition text correction (recommended)",
@@ -19,7 +19,7 @@
         "title": "Reconfigure Vikunja voice assistant",
         "description": "Update the Vikunja voice assistant integration",
         "data": {
-          "vikunja_url": "Vikunja base URL (e.g. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja base URL",
           "vikunja_api_key": "Vikunja API Token",
           "ai_task_entity": "AI Task entity",
           "voice_correction": "Enable speech recognition text correction (recommended)",

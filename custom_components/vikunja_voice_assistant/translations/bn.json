@@ -5,7 +5,7 @@
         "title": "Vikunja ভয়েস সহকারী",
         "description": "Vikunja ভয়েস সহকারী ইন্টিগ্রেশন সেটআপ করুন",
         "data": {
-          "vikunja_url": "Vikunja বেস URL (যেমন https://vikunja.example.com)",
+          "vikunja_url": "Vikunja বেস URL",
           "vikunja_api_key": "Vikunja API টোকেন",
           "ai_task_entity": "AI টাস্ক সত্তা",
           "voice_correction": "ভয়েস রিকগনিশন টেক্সট সংশোধন সক্রিয় করুন (প্রস্তাবিত)",
@@ -19,7 +19,7 @@
         "title": "Vikunja ভয়েস সহকারী পুনঃসংযোজন",
         "description": "Vikunja ভয়েস সহকারী ইন্টিগ্রেশনের কনফিগারেশন আপডেট করুন",
         "data": {
-          "vikunja_url": "Vikunja বেস URL (যেমন https://vikunja.example.com)",
+          "vikunja_url": "Vikunja বেস URL",
           "vikunja_api_key": "Vikunja API টোকেন",
           "ai_task_entity": "AI টাস্ক সত্তা",
           "voice_correction": "ভয়েস রিকগনিশন টেক্সট সংশোধন সক্রিয় করুন (প্রস্তাবিত)",
