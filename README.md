@@ -86,3 +86,40 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
 ## 🤖 AI Conversation Agent (Recommended)
 
 Append this to your Home Assistant Voice Assistant’s conversation Agent custom instructions:
+
+
+
+```
+If the user mentions or implies creating or adding a new task,
+always call this tool (do not leave any field empty):
+
+tool_name: VikunjaAddTask
+tool_args: {
+  task_description: "<exact user sentence>",
+}
+```
+*This will allow your voice assistant to create tasks even if the keywords were missing.*
+
+
+
+
+📹 [Video Guide](https://github.com/user-attachments/assets/0440bc71-b748-4118-8afd-6f0f10b22003)
+
+---
+## 🗺️ Roadmap
+Check the [roadmap project](https://github.com/users/NeoHuncho/projects/1) to see and add your feature requests! ✍️
+
+---
+
+## 🚧 Limitations
+
+* ❌ Cannot create new labels (except auto-creating **voice**)
+* ❌ Cannot create new projects
+* ❌ Cannot create new assignee users (only assign existing)
+* ❌ Only works with one language at a time (selected Home Assistant language)
+
+---
+
+## 📜 License
+
+MIT – see [LICENSE](LICENSE).
