@@ -5,7 +5,7 @@ intents:
   VikunjaAddTask:
     data:
       - sentences:
-          - "[I | I'd | I'll | I'm | I want to | I would like to | I need to | let's | please | can you | could you] (add | ad | at | and | had | app | create | crate | great | grade | make | mate | have | set | put | do | get | dad | head | insert | schedule | fake | creates) [a | an | the | this | that | my | new | one] [new | upcoming | quick | simple | daily | weekly | rapid | urgent] (task | tasker | tusk | ask | tests | tasks | to do | to-do | todo | task for | item | thing) {task_description}"
+          - "[I | I'd | I'll | I'm | I want to | I would like to | I need to | let's | please | can you | could you] (add | ad | at | and | had | app | create | crate | great | grade | make | mate | have | set | put | do | get | dad | head | insert | schedule | fake | creates| what's) [a | an | the | this | that | my | new | one] [new | upcoming | quick | simple | daily | weekly | rapid | urgent] (task | tasker | tusk | ask | tests | tasks | to do | to-do | todo | task for | item | thing) {task_description}"
 
 lists:
   task_description:
