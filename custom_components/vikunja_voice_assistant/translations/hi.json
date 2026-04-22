@@ -5,7 +5,7 @@
         "title": "Vikunja वॉइस असिस्टेंट",
         "description": "Vikunja वॉइस असिस्टेंट इंटीग्रेशन सेटअप करें",
         "data": {
-          "vikunja_url": "Vikunja बेस URL (उदा. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja बेस URL",
           "vikunja_api_key": "Vikunja API टोकन",
           "ai_task_entity": "AI कार्य इकाई",
           "voice_correction": "वॉइस रिकॉग्निशन टेक्स्ट सुधार सक्षम करें (अनुशंसित)",
@@ -19,7 +19,7 @@
         "title": "Vikunja वॉइस असिस्टेंट पुनः कॉन्फ़िगर करें",
         "description": "Vikunja वॉइस असिस्टेंट इंटीग्रेशन की कॉन्फ़िगरेशन अपडेट करें",
         "data": {
-          "vikunja_url": "Vikunja बेस URL (उदा. https://vikunja.example.com)",
+          "vikunja_url": "Vikunja बेस URL",
           "vikunja_api_key": "Vikunja API टोकन",
           "ai_task_entity": "AI कार्य इकाई",
           "voice_correction": "वॉइस रिकॉग्निशन टेक्स्ट सुधार सक्षम करें (अनुशंसित)",

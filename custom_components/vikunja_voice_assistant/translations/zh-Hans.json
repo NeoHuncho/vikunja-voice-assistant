@@ -5,7 +5,7 @@
         "title": "Vikunja 语音助手",
         "description": "设置 Vikunja 语音助手集成",
         "data": {
-          "vikunja_url": "Vikunja 基础 URL (例如 https://vikunja.example.com)",
+          "vikunja_url": "Vikunja 基础 URL",
             "vikunja_api_key": "Vikunja API 令牌",
             "ai_task_entity": "AI 任务实体",
             "voice_correction": "启用语音识别文本纠正 (推荐)",
@@ -19,7 +19,7 @@
         "title": "重新配置 Vikunja 语音助手",
         "description": "更新 Vikunja 语音助手集成配置",
         "data": {
-          "vikunja_url": "Vikunja 基础 URL (例如 https://vikunja.example.com)",
+          "vikunja_url": "Vikunja 基础 URL",
           "vikunja_api_key": "Vikunja API 令牌",
           "ai_task_entity": "AI 任务实体",
           "voice_correction": "启用语音识别文本纠正 (推荐)",

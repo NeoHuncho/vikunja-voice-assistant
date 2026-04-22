@@ -5,7 +5,7 @@
         "title": "مساعد الصوت Vikunja",
         "description": "إعداد تكامل مساعد الصوت لفكونجا",
         "data": {
-          "vikunja_url": "عنوان URL الأساسي لـ Vikunja (مثال https://vikunja.example.com)",
+          "vikunja_url": "عنوان URL الأساسي لـ Vikunja",
           "vikunja_api_key": "رمز واجهة برمجة تطبيقات Vikunja",
           "ai_task_entity": "كيان مهمة الذكاء الاصطناعي",
           "voice_correction": "تفعيل تصحيح نص التعرف الصوتي (مستحسن)",
@@ -19,7 +19,7 @@
         "title": "إعادة تهيئة مساعد الصوت Vikunja",
         "description": "تحديث إعدادات تكامل مساعد الصوت Vikunja",
         "data": {
-          "vikunja_url": "عنوان URL الأساسي لـ Vikunja (مثال https://vikunja.example.com)",
+          "vikunja_url": "عنوان URL الأساسي لـ Vikunja",
           "vikunja_api_key": "رمز واجهة برمجة تطبيقات Vikunja",
           "ai_task_entity": "كيان مهمة الذكاء الاصطناعي",
           "voice_correction": "تفعيل تصحيح نص التعرف الصوتي (مستحسن)",

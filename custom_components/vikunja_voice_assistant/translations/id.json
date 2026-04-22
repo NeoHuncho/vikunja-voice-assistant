@@ -5,7 +5,7 @@
         "title": "Asisten suara Vikunja",
         "description": "Atur integrasi asisten suara Vikunja",
         "data": {
-          "vikunja_url": "URL dasar Vikunja (mis. https://vikunja.example.com)",
+          "vikunja_url": "URL dasar Vikunja",
           "vikunja_api_key": "Token API Vikunja",
           "ai_task_entity": "Entitas tugas AI",
           "voice_correction": "Aktifkan koreksi teks pengenalan suara (disarankan)",
@@ -19,7 +19,7 @@
         "title": "Konfigurasi ulang asisten suara Vikunja",
         "description": "Perbarui konfigurasi integrasi asisten suara Vikunja",
         "data": {
-          "vikunja_url": "URL dasar Vikunja (mis. https://vikunja.example.com)",
+          "vikunja_url": "URL dasar Vikunja",
           "vikunja_api_key": "Token API Vikunja",
           "ai_task_entity": "Entitas tugas AI",
           "voice_correction": "Aktifkan koreksi teks pengenalan suara (disarankan)",
