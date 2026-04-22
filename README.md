@@ -11,8 +11,8 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
 *[Video Demo 🎥](https://github.com/user-attachments/assets/c592b0e8-efc6-40d1-ad53-a442de69bfc5)*
 </div>
 
-> **⚠️ Important Notice (Breaking Changes):**
-> Due to recent changes in Vikunja's API token permissions (starting from Vikunja 2.3.0), you will need to add the task update permission to your API token for the voice label attachment to work.
+> **⚠️ Important Notice:**
+> With recent changes to Vikunja's API permissions (from version 2.3.0+), you must ensure your API token includes the correct permissions listed below. Missing permissions may prevent label attachment and assignment from working properly.
 
 ---
 
@@ -53,7 +53,9 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
      * **Set the following permissions**:
      * Labels: Create and Read All
      * Projects: Read All, Projectusers (optional - for user assignment)
-     * Tasks: Create and Update
+     * Tasks: Create
+     * Tasks Assignees: Create
+     * Tasks Labels: Create
        
    * **AI Task entity** [Video Guide OpenRouter](https://github.com/user-attachments/assets/500ad67f-89a6-473b-a934-e08f7a35d7e7)
 
@@ -84,39 +86,3 @@ Say **“create a task”** or **“add a task”** → Your task goes straight 
 ## 🤖 AI Conversation Agent (Recommended)
 
 Append this to your Home Assistant Voice Assistant’s conversation Agent custom instructions:
-
-
-```
-If the user mentions or implies creating or adding a new task,
-always call this tool (do not leave any field empty):
-
-tool_name: VikunjaAddTask
-tool_args: {
-  task_description: "<exact user sentence>",
-}
-```
-*This will allow your voice assistant to create tasks even if the keywords were missing.*
-
-
-
-
-📹 [Video Guide](https://github.com/user-attachments/assets/0440bc71-b748-4118-8afd-6f0f10b22003)
-
----
-## 🗺️ Roadmap
-Check the [roadmap project](https://github.com/users/NeoHuncho/projects/1) to see and add your feature requests! ✍️
-
----
-
-## 🚧 Limitations
-
-* ❌ Cannot create new labels (except auto-creating **voice**)
-* ❌ Cannot create new projects
-* ❌ Cannot create new assignee users (only assign existing)
-* ❌ Only works with one language at a time (selected Home Assistant language)
-
----
-
-## 📜 License
-
-MIT – see [LICENSE](LICENSE).
