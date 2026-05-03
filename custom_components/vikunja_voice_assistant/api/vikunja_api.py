@@ -101,19 +101,67 @@ class VikunjaAPI:
                 _LOGGER.error("Response content: %s", resp.text)
             return []
 
-    def get_labels(self):
+    @staticmethod
+    def _pagination_total_pages(response):
         try:
-            response = requests.get(
-                f"{self.url}/labels", headers=self.headers, timeout=30
-            )
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.RequestException as err:
-            _LOGGER.error("Failed to get labels: %s", err)
-            resp = getattr(err, "response", None)
-            if resp is not None and hasattr(resp, "text"):
-                _LOGGER.error("Response content: %s", resp.text)
-            return []
+            return int(response.headers.get("x-pagination-total-pages", ""))
+        except (TypeError, ValueError):
+            return None
+
+    @staticmethod
+    def _normalize_label_title(title):
+        return str(title or "").strip().casefold()
+
+    @classmethod
+    def find_label_by_title(cls, labels, label_name):
+        """Return the first label with an exact title match."""
+        normalized_name = cls._normalize_label_title(label_name)
+        for label in labels or []:
+            if not isinstance(label, dict):
+                continue
+            if cls._normalize_label_title(label.get("title")) == normalized_name:
+                return label
+        return None
+
+    def get_labels(self, search=None):
+        labels = []
+        page = 1
+        per_page = 100
+        while True:
+            params = {"page": page, "per_page": per_page}
+            if search:
+                params["s"] = search
+            try:
+                response = requests.get(
+                    f"{self.url}/labels",
+                    headers=self.headers,
+                    params=params,
+                    timeout=30,
+                )
+                response.raise_for_status()
+                data = response.json()
+            except requests.exceptions.RequestException as err:
+                _LOGGER.error("Failed to get labels: %s", err)
+                resp = getattr(err, "response", None)
+                if resp is not None and hasattr(resp, "text"):
+                    _LOGGER.error("Response content: %s", resp.text)
+                return labels
+
+            if not isinstance(data, list):
+                return labels
+
+            labels.extend(data)
+            total_pages = self._pagination_total_pages(response)
+            if total_pages is not None:
+                if page >= total_pages:
+                    break
+            elif len(data) < per_page:
+                break
+            page += 1
+        return labels
+
+    def get_label_by_title(self, label_name):
+        return self.find_label_by_title(self.get_labels(search=label_name), label_name)
 
     def create_label(self, label_name):
         """Create a new label with a random hex color."""

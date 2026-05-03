@@ -28,6 +28,28 @@ _LOGGER = logging.getLogger(__name__)
 ## NOTE: `_friendly_due_phrase` removed; using `friendly_due_phrase` from response_formatter.
 
 
+def _append_label_if_missing(labels, label):
+    if not isinstance(labels, list) or not isinstance(label, dict):
+        return
+    label_id = label.get("id")
+    if label_id is not None and any(
+        isinstance(existing, dict) and existing.get("id") == label_id
+        for existing in labels
+    ):
+        return
+    labels.append(label)
+
+
+def _find_label_by_title(labels, label_name):
+    normalized_name = str(label_name or "").strip().casefold()
+    for label in labels or []:
+        if not isinstance(label, dict):
+            continue
+        if str(label.get("title") or "").strip().casefold() == normalized_name:
+            return label
+    return None
+
+
 async def process_task(
     hass, task_description: str, user_cache_users: List[Dict[str, Any]]
 ):
@@ -59,16 +81,21 @@ async def process_task(
     voice_label_id = None
     if auto_voice_label:
         try:
-            for lbl in labels or []:
-                if isinstance(lbl, dict) and lbl.get("title", "").lower() == "voice":
-                    voice_label_id = lbl.get("id")
-                    break
+            voice_label = _find_label_by_title(labels, "voice")
+            if voice_label is None:
+                voice_label = await hass.async_add_executor_job(
+                    vikunja_api.get_label_by_title, "voice"
+                )
+                _append_label_if_missing(labels, voice_label)
+            if voice_label:
+                voice_label_id = voice_label.get("id")
             if voice_label_id is None:
                 voice_label = await hass.async_add_executor_job(
                     vikunja_api.create_label, "voice"
                 )
                 if voice_label:
                     voice_label_id = voice_label.get("id")
+                    _append_label_if_missing(labels, voice_label)
         except Exception as label_err:  # noqa: BLE001
             _LOGGER.error("Could not ensure 'voice' label exists: %s", label_err)
 

@@ -30,8 +30,11 @@ class FakeVikunjaAPI:
     def __init__(self, url, key):  # noqa: D401
         self._projects = []
         self._labels = []
+        self._label_search_results = {}
         self._tasks_created = []
         self._assignments = []
+        self._created_labels = []
+        self._attached_labels = []
 
     def _set_projects(self, projects):
         self._projects = projects
@@ -39,13 +42,20 @@ class FakeVikunjaAPI:
     def _set_labels(self, labels):
         self._labels = labels
 
+    def _set_label_search_result(self, label_name, label):
+        self._label_search_results[label_name] = label
+
     def get_projects(self):
         return self._projects
 
     def get_labels(self):
         return self._labels
 
+    def get_label_by_title(self, name):
+        return self._label_search_results.get(name)
+
     def create_label(self, name):
+        self._created_labels.append(name)
         return {"id": 999, "title": name}
 
     def add_task(self, task_data):
@@ -54,6 +64,7 @@ class FakeVikunjaAPI:
         return task
 
     def add_label_to_task(self, task_id, label_id):
+        self._attached_labels.append((task_id, label_id))
         return True
 
     def assign_user_to_task(self, task_id, user_id):
@@ -159,6 +170,25 @@ def test_process_task_with_assignee(patch_apis):
     assert ok is True
     assert "assigned to alice" in msg
     assert fake_vikunja._assignments == [(123, 7)]
+
+
+def test_process_task_reuses_voice_label_found_by_search(patch_apis):
+    fake_vikunja, fake_llm = patch_apis
+    fake_vikunja._set_projects([])
+    fake_vikunja._set_labels([{"id": 7, "title": "other"}])
+    fake_vikunja._set_label_search_result("voice", {"id": 42, "title": "voice"})
+    fake_llm.set_response({"title": "Buy milk", "project_id": 1})
+    hass = FakeHass(
+        base_config(CONF_AUTO_VOICE_LABEL=True, CONF_DETAILED_RESPONSE=False)
+    )
+
+    ok, msg, title = asyncio.run(process_task(hass, "Buy milk", []))
+
+    assert ok is True
+    assert title == "Buy milk"
+    assert msg == "Successfully added task: Buy milk"
+    assert fake_vikunja._created_labels == []
+    assert fake_vikunja._attached_labels == [(123, 42)]
 
 
 def test_process_task_llm_failure(patch_apis, monkeypatch):
